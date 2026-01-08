@@ -1,9 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <vector>
 #include <algorithm>
-#include <chrono>
 #include <random>
 
 int main() {
@@ -28,11 +26,9 @@ int main() {
         while (first_letter_index < last_letter_index and !isalpha(word[first_letter_index])) {
             first_letter_index++;
         }
-        std::cout << first_letter_index << std::endl;
-        std::cout << last_letter_index << std::endl;
-        for (char c : word) {
-            if (!isalpha(c)) {
-                not_alpha+=c;
+        for (char character : word) {
+            if (!isalpha(character)) {
+                not_alpha+=character;
                 char_index++;
                 continue;
             }
@@ -40,12 +36,12 @@ int main() {
                 char_index++; letter_index++;
                 continue;
             }
-            word_middle += c;
+            word_middle += character;
             char_index++; letter_index++;
 
 
         }
-        shuffle(word_middle.begin(), word_middle.end(), gen);
+        std::ranges::shuffle(word_middle.begin(), word_middle.end(), gen);
         output+=word[first_letter_index]+word_middle+word[last_letter_index]+not_alpha+' ';
         word_middle.clear();
         not_alpha.clear();
