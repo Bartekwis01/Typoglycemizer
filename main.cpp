@@ -6,7 +6,7 @@
 
 int main() {
     std::string text, word, word_middle, output, not_alpha;
-    int first_letter_index, last_letter_index, char_index, letter_index;
+    int first_letter_index, last_letter_index, char_index;
 
     getline(std::cin, text);
 
@@ -17,7 +17,6 @@ int main() {
 
     while (ss >> word) {
         char_index = 0;
-        letter_index = 0;
         last_letter_index = word.length() - 1;
         first_letter_index = 0;
         while (last_letter_index >= 0 and !isalpha(word[last_letter_index])) {
@@ -36,11 +35,11 @@ int main() {
                 continue;
             }
             if (char_index == first_letter_index or char_index == last_letter_index) {
-                char_index++; letter_index++;
+                char_index++;
                 continue;
             }
             word_middle += character;
-            char_index++; letter_index++;
+            char_index++;
 
 
         }
