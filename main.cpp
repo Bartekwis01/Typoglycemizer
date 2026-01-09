@@ -5,8 +5,9 @@
 #include <random>
 
 int main() {
-    std::string text, word, word_middle, output, not_alpha;
+    std::string text, word, word_middle, output, not_alpha, old_word_middle;
     int first_letter_index, last_letter_index, char_index;
+    bool FORCE_SHUFFLE = true; //if true will force shuffling the middle letters of a word if possible
 
     getline(std::cin, text);
 
@@ -43,7 +44,17 @@ int main() {
 
 
         }
-        std::ranges::shuffle(word_middle.begin(), word_middle.end(), gen);
+        if (word.length() >= 4) {
+            if (FORCE_SHUFFLE) {
+                old_word_middle = word_middle;
+                while (word_middle == old_word_middle) {
+                    std::ranges::shuffle(word_middle.begin(), word_middle.end(), gen);
+                }
+            }
+            else {
+                std::ranges::shuffle(word_middle.begin(), word_middle.end(), gen);
+            }
+        }
         if (first_letter_index != -1) {
             output+=word[first_letter_index];
         }
