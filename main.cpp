@@ -26,6 +26,9 @@ int main() {
         while (first_letter_index < last_letter_index and !isalpha(word[first_letter_index])) {
             first_letter_index++;
         }
+        if (first_letter_index == 0 and !isalpha(word[0])) {
+            first_letter_index = -1;
+        }
         for (char character : word) {
             if (!isalpha(character)) {
                 not_alpha+=character;
@@ -42,7 +45,14 @@ int main() {
 
         }
         std::ranges::shuffle(word_middle.begin(), word_middle.end(), gen);
-        output+=word[first_letter_index]+word_middle+word[last_letter_index]+not_alpha+' ';
+        if (first_letter_index != -1) {
+            output+=word[first_letter_index];
+        }
+        output+=word_middle;
+        if (last_letter_index != -1) {
+            output+=word[last_letter_index];
+        }
+        output+=not_alpha+' ';
         word_middle.clear();
         not_alpha.clear();
 
