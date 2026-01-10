@@ -6,6 +6,7 @@
 
 int main() {
     std::string text, word, output;
+    bool FORCE_SHUFFLE = true; //if true will force shuffling the middle letters of a word if possible
 
     getline(std::cin, text);
 
@@ -18,7 +19,7 @@ int main() {
         int char_index = 0;
         int last_letter_index = word.length() - 1;
         int first_letter_index = 0;
-        std::string not_alpha, word_middle;
+        std::string not_alpha, word_middle, old_word_middle;
         while (last_letter_index >= 0 and !isalpha(word[last_letter_index])) {
             last_letter_index--;
         }
@@ -38,7 +39,18 @@ int main() {
             }
             char_index++;
         }
-        std::ranges::shuffle(word_middle.begin(), word_middle.end(), gen);
+        if (word.length() >= 4) {
+            old_word_middle = word_middle;
+            if (FORCE_SHUFFLE) {
+                old_word_middle = word_middle;
+                while (word_middle == old_word_middle) {
+                    std::ranges::shuffle(word_middle.begin(), word_middle.end(), gen);
+                }
+            }
+            else {
+                std::ranges::shuffle(word_middle.begin(), word_middle.end(), gen);
+            }
+        }
         int j = 0;
         for (int i = 0; i < word.length(); i++) {
             if (i==first_letter_index or i==last_letter_index) {
