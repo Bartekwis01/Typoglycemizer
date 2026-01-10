@@ -5,8 +5,7 @@
 #include <random>
 
 int main() {
-    std::string text, word, word_middle, output, not_alpha, old_word_middle;
-    int first_letter_index, last_letter_index, char_index;
+    std::string text, word, output;
     bool FORCE_SHUFFLE = true; //if true will force shuffling the middle letters of a word if possible
 
     getline(std::cin, text);
@@ -17,9 +16,10 @@ int main() {
     std::mt19937 gen(seed());
 
     while (ss >> word) {
-        char_index = 0;
-        last_letter_index = word.length() - 1;
-        first_letter_index = 0;
+        int char_index = 0;
+        int last_letter_index = word.length() - 1;
+        int first_letter_index = 0;
+        std::string not_alpha, word_middle, old_word_middle;
         while (last_letter_index >= 0 and !isalpha(word[last_letter_index])) {
             last_letter_index--;
         }
@@ -30,21 +30,17 @@ int main() {
             first_letter_index = -1;
         }
         for (char character : word) {
-            if (!isalpha(character)) {
-                not_alpha+=character;
-                char_index++;
-                continue;
+            if (isalpha(character) and char_index != first_letter_index and char_index != last_letter_index) {
+                not_alpha.push_back('\0');
+                word_middle += character;
             }
-            if (char_index == first_letter_index or char_index == last_letter_index) {
-                char_index++;
-                continue;
+            else { //isn't alpha
+                not_alpha.push_back(character);
             }
-            word_middle += character;
             char_index++;
-
-
         }
         if (word.length() >= 4) {
+            old_word_middle = word_middle;
             if (FORCE_SHUFFLE) {
                 old_word_middle = word_middle;
                 while (word_middle == old_word_middle) {
@@ -55,16 +51,22 @@ int main() {
                 std::ranges::shuffle(word_middle.begin(), word_middle.end(), gen);
             }
         }
-        if (first_letter_index != -1) {
-            output+=word[first_letter_index];
+        int j = 0;
+        for (int i = 0; i < word.length(); i++) {
+            if (i==first_letter_index or i==last_letter_index) {
+                output += word[i];
+            }
+            else if (not_alpha[i] != '\0') { //closest to truly empty
+                output+= not_alpha[i];
+            }
+            else {
+                output+= word_middle[j];
+                j++;
+            }
         }
-        output+=word_middle;
-        if (last_letter_index != -1) {
-            output+=word[last_letter_index];
-        }
-        output+=not_alpha+' ';
-        word_middle.clear();
-        not_alpha.clear();
+        output += ' ';
+        not_alpha.clear(); word_middle.clear();
+
 
     }
     std::cout << output;
