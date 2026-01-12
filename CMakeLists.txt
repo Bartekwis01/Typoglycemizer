@@ -10,6 +10,6 @@ if (MINGW)
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
 endif()
 
-add_executable(Typoglycemia standalone.cpp)
+add_executable(typoglycemizer standalone.cpp)
 
 target_link_libraries(Typoglycemia PRIVATE typoglycemia)
